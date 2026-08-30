@@ -631,14 +631,15 @@ void client_draw_border(Client *c, struct ivec2 offsets) {
 			? corner_radii_none()
 			: set_client_corner_location(c);
 
-	if (hit_no_border && config.smartgaps) {
+	if (hit_no_border) {
 		c->bw = 0;
 		c->fake_no_border = true;
-	} else if (hit_no_border && !config.smartgaps) {
-		wlr_scene_rect_set_size(c->border, 0, 0);
-		wlr_scene_node_set_position(&c->scene_surface->node, c->bw, c->bw);
-		c->fake_no_border = true;
-		return;
+
+		if (!config.smartgaps) {
+			wlr_scene_rect_set_size(c->border, 0, 0);
+			wlr_scene_node_set_position(&c->scene_surface->node, c->bw, c->bw);
+			return;
+		}
 	} else if (!c->isfullscreen && VISIBLEON(c, c->mon)) {
 		c->bw = c->isnoborder ? 0 : config.borderpx;
 		c->fake_no_border = false;
