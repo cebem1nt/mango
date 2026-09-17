@@ -4266,6 +4266,7 @@ void reset_blur_params(void) {
 			m->blur =
 				wlr_scene_optimized_blur_create(&server.scene->tree, 0, 0);
 			wlr_scene_node_reparent(&m->blur->node, server.layers[LyrBlur]);
+			wlr_scene_node_set_position(&m->blur->node, m->m.x, m->m.y);
 			wlr_scene_optimized_blur_set_size(m->blur, m->m.width, m->m.height);
 			wlr_scene_set_blur_data(
 				server.scene, config.blur_params.num_passes,
@@ -4579,13 +4580,13 @@ void reset_tag(int old_tag_num) {
 	}
 }
 
-void reload_config(const Arg *arg) {
+int32_t reload_config(const Arg *arg) {
 	int old_tag_num = config.tag_num;
 	parse_config();
 	reset_tag(old_tag_num);
 	reset_option();
 	printstatus(IPC_WATCH_ARRANGGE);
-	return;
+	return 1;
 }
 
 FuncType parse_func_name(char *func_name, Arg *arg, char *arg_value,

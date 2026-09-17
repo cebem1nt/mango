@@ -40,7 +40,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <sys/syscall.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
@@ -334,8 +333,7 @@ void run(char *startup_cmd, int readiness_fd) {
 	/* At this point the outputs are initialized, choose initial
 	 * selected_monitor based on cursor position, and set default cursor image
 	 */
-	server.selected_monitor =
-		monitor_at_point(server.cursor->x, server.cursor->y);
+	set_selected_monitor(monitor_at_point(server.cursor->x, server.cursor->y));
 
 	/* TODO hack to get cursor to display in its initial location (100, 100)
 	 * instead of (0, 0) and then jumping. still may not be fully

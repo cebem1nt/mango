@@ -67,7 +67,7 @@ enum render_bit_depth {
 };
 
 /* Functions */
-typedef void (*FuncType)(const Arg *);
+typedef int32_t (*FuncType)(const Arg *);
 
 typedef struct {
 	uint32_t keycode1;
@@ -84,7 +84,7 @@ typedef struct {
 typedef struct {
 	uint32_t mod;
 	KeySymCode keysymcode;
-	void (*func)(const Arg *);
+	int32_t (*func)(const Arg *);
 	Arg arg;
 	char mode[28];
 	bool iscommonmode;
@@ -248,7 +248,7 @@ typedef struct {
 typedef struct {
 	uint32_t mod;
 	uint32_t dir;
-	void (*func)(const Arg *);
+	int32_t (*func)(const Arg *);
 	Arg arg;
 	char mode[28];
 	bool iscommonmode;
@@ -261,7 +261,7 @@ typedef struct {
 	uint32_t mod;
 	uint32_t motion;
 	uint32_t fingers_count;
-	void (*func)(const Arg *);
+	int32_t (*func)(const Arg *);
 	Arg arg;
 	char mode[28];
 	bool iscommonmode;
@@ -272,7 +272,7 @@ typedef struct {
 
 typedef struct {
 	uint32_t fold;
-	void (*func)(const Arg *);
+	int32_t (*func)(const Arg *);
 	Arg arg;
 	char mode[28];
 	bool iscommonmode;
@@ -284,7 +284,7 @@ typedef struct {
 typedef struct {
 	uint32_t mod;
 	uint32_t button;
-	void (*func)(const Arg *);
+	int32_t (*func)(const Arg *);
 	Arg arg;
 	char mode[28];
 	bool iscommonmode;
@@ -675,7 +675,7 @@ void reset_option(void);
 
 void reset_tag(int old_tag_num);
 
-void reload_config(const Arg *arg);
+int32_t reload_config(const Arg *arg);
 
 void tag_slot_set_defaults(Monitor *m, uint32_t tag);
 
