@@ -1056,18 +1056,31 @@ Client *direction_select(const Arg *arg) {
  * only return that client */
 Client *client_focus_top(Monitor *m) {
 	Client *c = NULL;
+	Client *global = NULL;
 
 	if (!m) {
 		return NULL;
 	}
 
+	if (m->sel && m->sel->isglobal)
+		return m->sel;
+
 	wl_list_for_each(c, &server.focus_stack, flink) {
-		if (c->iskilling || c->isunglobal)
+		if (c->iskilling || c->isunglobal || !client_surface(c)->mapped)
 			continue;
-		if (VISIBLEON(c, m) && client_surface(c)->mapped)
+
+		if (c->isglobal) {
+			if (!global)
+				global = c;
+
+			continue;
+		}
+
+		if (VISIBLEON(c, m))
 			return c;
 	}
-	return NULL;
+
+	return global;
 }
 
 Client *get_next_stack_client(Client *c, bool reverse) {
